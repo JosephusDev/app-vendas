@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { NAV_THEME } from '~/lib/constants';
 import { StatusBar } from 'expo-status-bar';
 import { useAuth } from '~/context/AuthContext';
-import StackComponent from '~/components/Stack';
-import DrawerComponent from '~/components/Drawer';
 import { PortalHost } from '@rn-primitives/portal';
 import * as SplashScreen from 'expo-splash-screen';
 import { useColorScheme } from '~/lib/useColorScheme';
@@ -19,6 +17,8 @@ import {
   Inter_400Regular, 
   useFonts 
 } from '@expo-google-fonts/inter';
+import Home from './home';
+import Toast from 'react-native-toast-message';
 
 // Define the light and dark themes
 const LIGHT_THEME: Theme = {
@@ -35,8 +35,6 @@ const DARK_THEME: Theme = {
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-
-  const {isAuthenticated} = useAuth();
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
 
@@ -89,11 +87,8 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      {
-        isAuthenticated ? 
-        <DrawerComponent isDarkColorScheme={isDarkColorScheme}/> : 
-        <StackComponent/>
-      }
+      <Home/>
+      <Toast/>
       <PortalHost />
     </ThemeProvider>
   );

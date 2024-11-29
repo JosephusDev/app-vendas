@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Starter Base",
-    "slug": "starter-base",
+    "name": "AppVendas",
+    "slug": "AppVendas",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -40,6 +40,7 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "newArchEnabled": true
   }
 }
