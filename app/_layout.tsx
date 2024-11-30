@@ -1,15 +1,14 @@
-import '~/global.css';
-import { Platform } from 'react-native';
-import { useEffect, useState } from 'react';
-import { NAV_THEME } from '~/lib/constants';
+import '../global.css';
 import { StatusBar } from 'expo-status-bar';
-import { useAuth } from '~/context/AuthContext';
-import { PortalHost } from '@rn-primitives/portal';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from '~/lib/useColorScheme';
-import { Theme, ThemeProvider } from '@react-navigation/native';
+import { NAV_THEME } from '~/lib/constants';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 import { setAndroidNavigationBar } from '~/lib/android-navigation-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Theme, ThemeProvider } from '@react-navigation/native';
+import { useColorScheme } from '~/lib/useColorScheme';
+import * as SplashScreen from 'expo-splash-screen';
+import { Platform } from 'react-native';
 import { 
   Inter_900Black, 
   Inter_700Bold, 
@@ -17,10 +16,9 @@ import {
   Inter_400Regular, 
   useFonts 
 } from '@expo-google-fonts/inter';
-import Home from './home';
 import Toast from 'react-native-toast-message';
+import DrawerComponent from '~/components/Drawer';
 
-// Define the light and dark themes
 const LIGHT_THEME: Theme = {
   dark: false,
   colors: NAV_THEME.light,
@@ -31,10 +29,9 @@ const DARK_THEME: Theme = {
   colors: NAV_THEME.dark,
 };
 
-// Prevent the splash screen from auto-hiding before loading completes
-SplashScreen.preventAutoHideAsync();
+const Layout: React.FC = () => {
 
-export default function RootLayout() {
+  
   const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
 
@@ -46,8 +43,8 @@ export default function RootLayout() {
     Inter_400Regular,
   });
 
-  useEffect(() => {
-    const loadTheme = async () => {
+    useEffect(() => {
+      const loadTheme = async () => {
       const storedTheme = await AsyncStorage.getItem('theme');
       
       if (Platform.OS === 'web') {
@@ -61,35 +58,37 @@ export default function RootLayout() {
       }
       
       const colorTheme = storedTheme === 'dark' ? 'dark' : 'light';
-      if (colorTheme !== colorScheme) {
-        setColorScheme(colorTheme);
+        if (colorTheme !== colorScheme) {
+          setColorScheme(colorTheme);
+          setAndroidNavigationBar(colorTheme);
+        }
         setAndroidNavigationBar(colorTheme);
-      }
-      
-      setAndroidNavigationBar(colorTheme);
-      setIsColorSchemeLoaded(true);
-    };
+        setIsColorSchemeLoaded(true);
+      };
 
-    loadTheme().finally(() => {
-      if (fontsLoaded && isColorSchemeLoaded) {
-        SplashScreen.hideAsync();
-      }
-    });
+      loadTheme().finally(() => {
+        if (fontsLoaded && isColorSchemeLoaded) {
+          SplashScreen.hideAsync();
+        }
+      });
   }, [colorScheme, setColorScheme, fontsLoaded, isColorSchemeLoaded]);
 
   // Show nothing while fonts and color scheme are loading
   if (!fontsLoaded || !isColorSchemeLoaded) {
     return null;
   }
-
   
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? 'light' : 'dark'} />
-      <Home/>
-      <Toast/>
-      <PortalHost />
-    </ThemeProvider>
+        <View className='w-screen bg-background h-full'>
+          <DrawerComponent isDarkColorScheme = {isDarkColorScheme}/>
+        </View>
+        <Toast/>
+      </ThemeProvider>
+
   );
-}
+};
+
+export default Layout;

@@ -1,6 +1,5 @@
 import { Button } from '~/components/ui/button';
 import { Drawer } from 'expo-router/drawer';
-import { useAuth } from '~/context/AuthContext';
 import Feather from "@expo/vector-icons/Feather";
 import { ThemeToggle } from '~/components/ThemeToggle';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -10,13 +9,12 @@ interface IProps {
 }
 
 export default function DrawerComponent({ isDarkColorScheme }: IProps) {
-    const { logout } = useAuth();
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <Drawer>
                 <Drawer.Screen
-                    name="home"
+                    name="index"
                     options={({ navigation }) => ({
                         title: 'Início',
                         drawerIcon: () => (
@@ -38,11 +36,11 @@ export default function DrawerComponent({ isDarkColorScheme }: IProps) {
                     })}
                 />
                 <Drawer.Screen
-                    name="agendamento"
+                    name="clientes"
                     options={({ navigation }) => ({
-                        title: 'Agendamentos',
+                        title: 'Clientes',
                         drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='clock' />
+                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='users' />
                         ),
                         headerLeft: () => (
                             <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
@@ -60,11 +58,11 @@ export default function DrawerComponent({ isDarkColorScheme }: IProps) {
                     })}
                 />
                 <Drawer.Screen
-                    name="localizacao"
+                    name="vendas"
                     options={({ navigation }) => ({
-                        title: 'Serviços de Saúde',
+                        title: 'Vendas',
                         drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='map' />
+                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='shopping-cart' />
                         ),
                         headerLeft: () => (
                             <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
@@ -82,11 +80,11 @@ export default function DrawerComponent({ isDarkColorScheme }: IProps) {
                     })}
                 />
                 <Drawer.Screen
-                    name="saudia"
+                    name="produtos"
                     options={({ navigation }) => ({
-                        title: 'ConsultorIA',
+                        title: 'Produtos',
                         drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='message-circle' />
+                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='shopping-bag' />
                         ),
                         headerLeft: () => (
                             <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
@@ -104,11 +102,11 @@ export default function DrawerComponent({ isDarkColorScheme }: IProps) {
                     })}
                 />
                 <Drawer.Screen
-                    name="perfil"
+                    name="categorias"
                     options={({ navigation }) => ({
-                        title: 'Perfil de Utilizador',
+                        title: 'Categorias',
                         drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='user' />
+                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='tag' />
                         ),
                         headerLeft: () => (
                             <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
@@ -126,11 +124,11 @@ export default function DrawerComponent({ isDarkColorScheme }: IProps) {
                     })}
                 />
                 <Drawer.Screen
-                    name="politicas"
+                    name="fornecedores"
                     options={({ navigation }) => ({
-                        title: 'Termos e Políticas',
+                        title: 'Fornecedores',
                         drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='info' />
+                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='users' />
                         ),
                         headerLeft: () => (
                             <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
@@ -148,34 +146,48 @@ export default function DrawerComponent({ isDarkColorScheme }: IProps) {
                     })}
                 />
                 <Drawer.Screen
-                    name="logout"
-                    options={{
-                        title: 'Terminar sessão',
+                    name="utilizadores"
+                    options={({ navigation }) => ({
+                        title: 'Utilizadores',
                         drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='log-out' />
+                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='users' />
+                        ),
+                        headerLeft: () => (
+                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
+                                <Feather
+                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
+                                    size={20}
+                                    name="menu"
+                                    backgroundColor="transparent"
+                                />
+                            </Button>
                         ),
                         headerRight: () => <ThemeToggle />,
                         headerTitleStyle: { fontFamily: 'Inter_900Black' },
                         drawerLabelStyle: { fontFamily: 'Inter_900Black' },
-                    }}
-                    listeners={{
-                        drawerItemPress: (e) => {
-                            e.preventDefault();
-                            logout();
-                        },
-                    }}
+                    })}
                 />
                 <Drawer.Screen
-                    name="index"
-                    options={{
-                        drawerItemStyle: {display: 'none',}
-                    }}
-                />
-                <Drawer.Screen
-                    name="signup"
-                    options={{
-                        drawerItemStyle: {display: 'none',}
-                    }}
+                    name="relatorios"
+                    options={({ navigation }) => ({
+                        title: 'Relatorios',
+                        drawerIcon: () => (
+                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='file-text' />
+                        ),
+                        headerLeft: () => (
+                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
+                                <Feather
+                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
+                                    size={20}
+                                    name="menu"
+                                    backgroundColor="transparent"
+                                />
+                            </Button>
+                        ),
+                        headerRight: () => <ThemeToggle />,
+                        headerTitleStyle: { fontFamily: 'Inter_900Black' },
+                        drawerLabelStyle: { fontFamily: 'Inter_900Black' },
+                    })}
                 />
             </Drawer>
         </GestureHandlerRootView>

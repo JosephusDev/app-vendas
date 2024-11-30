@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AppVendas",
-    "slug": "AppVendas",
+    "name": "contextAnalysisAI",
+    "slug": "contextAnalysisAI",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -40,7 +40,6 @@
     ],
     "experiments": {
       "typedRoutes": true
-    },
-    "newArchEnabled": true
+    }
   }
 }
