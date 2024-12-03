@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "contextAnalysisAI",
-    "slug": "contextAnalysisAI",
+    "name": "AppVendas",
+    "slug": "AppVendas",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
