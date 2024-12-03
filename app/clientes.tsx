@@ -1,7 +1,7 @@
-import { Edit, Trash } from "lucide-react-native";
+import { Edit, Plus, Printer, Trash } from "lucide-react-native";
 import { useState } from "react";
 import { Alert, View } from "react-native";
-import { AddButton } from "~/components/AddButton";
+import { FloatButton } from "~/components/FloatButton";
 import MyInput from "~/components/MyInput";
 import MyModal from "~/components/MyModal";
 import { MyTable } from "~/components/MyTable";
@@ -89,7 +89,7 @@ export default function Clientes(){
                   <MyInput keyboardType="phone-pad" dica="Contacto do cliente"/>
                 </MyModal>
             </View>
-            <AddButton aoClicar={()=>setOpen(true)}/>
+            <FloatButton icon={<Plus size={24} color={"#FFF"} />} aoClicar={()=>setOpen(true)}/>
         </>
     )
 }

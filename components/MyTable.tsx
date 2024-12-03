@@ -55,7 +55,7 @@ export const MyTable: React.FC<MyTableProps> = ({ data, columns }) => {
                         className="px-0.5"
                         style={{ width: columnWidths[index] }}
                     >
-                        <Text>{column.label}</Text>
+                        <Text className='font-regular'>{column.label}</Text>
                     </TableHead>
                     ))}
                 </TableRow>
@@ -70,7 +70,7 @@ export const MyTable: React.FC<MyTableProps> = ({ data, columns }) => {
                     renderItem={({ item, index }) => (
                     <TableRow
                         key={index}
-                        className={cn('active:bg-secondary', index % 2 && 'bg-muted/40')}
+                        className={cn('active:bg-secondary')}
                     >
                         {columns.map((column, colIndex) => (
                         <TableCell

@@ -18,6 +18,7 @@ export default function PieChartHome(){
             x="quarter" 
             y="earnings" 
             theme={VictoryTheme.material}
+            width={300}
             style={{
                 data: {
                   fillOpacity: 0.9,

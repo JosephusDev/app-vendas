@@ -21,7 +21,7 @@ export default function CardHome(
                 <CardTitle className="flex flex-row justify-between items-center">
                     <View className="flex flex-row items-center">
                         <Feather name={icon} size={20} color={isDarkColorScheme ? "#FFFFFF" : "#000000"}/> 
-                        <Text className="text-2xl ml-2">{title}</Text>
+                        <Text className="font-regular text-2xl ml-2">{title}</Text>
                     </View>
                 </CardTitle>
                 <CardDescription>{description}</CardDescription>
