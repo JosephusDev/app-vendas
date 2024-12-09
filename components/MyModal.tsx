@@ -23,7 +23,7 @@ export default function MyModal({ title = 'Adicionar', children, visivel, aoFech
                 <View className="bg-muted w-5/6 rounded-lg shadow-2xl p-5 h-auto">
                     <Text className="text-lg mb-4 font-regular">{title}</Text>
                     {children}
-                    <View className="flex flex-row justify-between gap-x-2 w-full mt-10">
+                    <View className="flex flex-row justify-around gap-x-4 w-full mt-10">
                         <Button
                             onPress={aoFechar}
                             className="flex flex-row gap-x-1 w-1/2"

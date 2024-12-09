@@ -80,6 +80,28 @@ export default function DrawerComponent({ isDarkColorScheme }: IProps) {
                     })}
                 />
                 <Drawer.Screen
+                    name="compras"
+                    options={({ navigation }) => ({
+                        title: 'Compras',
+                        drawerIcon: () => (
+                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='dollar-sign' />
+                        ),
+                        headerLeft: () => (
+                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
+                                <Feather
+                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
+                                    size={20}
+                                    name="menu"
+                                    backgroundColor="transparent"
+                                />
+                            </Button>
+                        ),
+                        headerRight: () => <ThemeToggle />,
+                        headerTitleStyle: { fontFamily: 'Inter_900Black' },
+                        drawerLabelStyle: { fontFamily: 'Inter_900Black' },
+                    })}
+                />
+                <Drawer.Screen
                     name="produtos"
                     options={({ navigation }) => ({
                         title: 'Produtos',

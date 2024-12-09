@@ -16,25 +16,29 @@ export default function Clientes(){
             id: 1,
             nome: 'Cliente 1',
             email: 'email@example.com',
-            telefone: '(123) 456-7890'
+            telefone: '(123) 456-7890',
+            bi:'57576767'
         },
         {
             id: 2,
             nome: 'Cliente 2',
             email: 'email@example.com',
-            telefone: '(987) 654-3210'
+            telefone: '(987) 654-3210',
+            bi:'57576767'
         },
         {
             id: 3,
             nome: 'Cliente 3',
             email: 'email@example.com',
-            telefone: '(987) 521-3210'
+            telefone: '(987) 521-3210',
+            bi:'57576767'
         }
     ]
     
     const columns = [
         { key: 'id', label: 'ID', minWidth: 50 },
         { key: 'nome', label: 'Nome', minWidth: 100 },
+        { key: 'bi', label: 'BI', minWidth: 150 },
         { key: 'email', label: 'Email', minWidth: 200 },
         { key: 'telefone', label: 'Telefone', minWidth: 200 },
         {
@@ -85,6 +89,7 @@ export default function Clientes(){
                   aoFechar={()=>setOpen(false)}
                 >
                   <MyInput dica="Nome do cliente"/>
+                  <MyInput dica="Nº BI do cliente"/>
                   <MyInput keyboardType="email-address" dica="Email do cliente"/>
                   <MyInput keyboardType="phone-pad" dica="Contacto do cliente"/>
                 </MyModal>

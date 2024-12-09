@@ -52,7 +52,6 @@ export const MyTable: React.FC<MyTableProps> = ({ data, columns }) => {
                     {columns.map((column, index) => (
                     <TableHead
                         key={column.key}
-                        className="px-0.5"
                         style={{ width: columnWidths[index] }}
                     >
                         <Text className='font-regular'>{column.label}</Text>
