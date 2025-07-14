@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Nivel {
+  ADMIN
+  USUARIO
+}
+
+enum StatusVenda {
+  PENDENTE
+  CONCLUIDA
+  CANCELADA
+}
+
+model Usuario {
+  id        String   @id @default(uuid())
+  nome      String   
+  usuario String
+  senha String
+  email  String?   @unique
+  telefone  String
+  nivel Nivel
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  vendas    Venda[]
+}
+
+model Categoria {
+  id        String   @id @default(uuid())
+  descricao String @unique
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+}
+
+model Cliente {
+  id        String   @id @default(uuid())
+  nome      String   
+  email  String?   @unique
+  telefone  String?
+  bi String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  vendas    Venda[]
+}
+
+
+model Fornecedor {
+  id        String   @id @default(uuid())
+  nome      String   
+  nif String
+  email  String?   @unique
+  telefone  String
+  endereco String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+}
+
+model Produto {
+  id        String   @id @default(uuid())
+  nome      String   
+  descricao String   
+  preco    Float
+  quantidade Int
+  iva Float
+  categoria String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  vendaItems VendaItem[]
+}
+
+model Venda {
+  id        String   @id @default(uuid())
+  clienteId String
+  cliente   Cliente  @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  usuarioId String
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Restrict)
+  dataVenda DateTime @default(now())
+  status    StatusVenda @default(PENDENTE)
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+  itens     VendaItem[]
+}
+
+model VendaItem {
+  id        String   @id @default(uuid())
+  vendaId String
+  venda    Venda    @relation(fields: [vendaId], references: [id], onDelete: Cascade)
+  produtoId String
+  produto   Produto  @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+  quantidade Int
+  total Float
+  created_at DateTime? @default(now())
+  updated_at DateTime? @updatedAt
+}
