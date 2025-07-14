@@ -8,171 +8,67 @@ interface IProps {
     isDarkColorScheme: boolean;
 }
 
+interface DrawerScreenConfig {
+    name: string;
+    title: string;
+    icon: keyof typeof Feather.glyphMap;
+}
+
 export default function DrawerComponent({ isDarkColorScheme }: IProps) {
+    const iconColor = isDarkColorScheme ? '#FFFFFF' : '#000000';
+    
+    const renderMenuButton = (navigation: any) => (
+        <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
+            <Feather
+                color={iconColor}
+                size={20}
+                name="menu"
+                backgroundColor="transparent"
+            />
+        </Button>
+    );
+
+    const renderDrawerIcon = (iconName: keyof typeof Feather.glyphMap) => (
+        <Feather color={iconColor} size={20} name={iconName} />
+    );
+
+    const getScreenOptions = (navigation: any) => ({
+        headerLeft: () => renderMenuButton(navigation),
+        headerRight: () => <ThemeToggle />,
+        headerTitleStyle: { fontFamily: 'Inter_700Bold', fontSize: 16 },
+        drawerLabelStyle: { fontFamily: 'Inter_700Bold', fontSize: 14 },
+    });
+
+    const screens: DrawerScreenConfig[] = [
+        { name: 'index', title: 'Início', icon: 'home' },
+        { name: 'clientes', title: 'Clientes', icon: 'users' },
+        { name: '(vendas)', title: 'Vendas', icon: 'shopping-cart' },
+        { name: 'produtos', title: 'Produtos', icon: 'shopping-bag' },
+        { name: 'categorias', title: 'Categorias', icon: 'tag' },
+        { name: 'utilizadores', title: 'Utilizadores', icon: 'users' },
+        { name: 'relatorios', title: 'Relatórios', icon: 'file-text' },
+    ];
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <Drawer
                 screenOptions={{
-                    drawerStyle: {
-                        width: 220
-                    }
+                    drawerStyle: { width: 220 },
+                    headerRight: () => <ThemeToggle />,
+                    headerLeft: () => renderMenuButton(undefined),
                 }}
             >
-                <Drawer.Screen
-                    name="index"
-                    options={({ navigation }) => ({
-                        title: 'Início',
-                        drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='home' />
-                        ),
-                        headerLeft: () => (
-                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
-                                <Feather
-                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
-                                    size={20}
-                                    name="menu"
-                                    backgroundColor="transparent"
-                                />
-                            </Button>
-                        ),
-                        headerRight: () => <ThemeToggle />,
-                        headerTitleStyle: { fontFamily: 'Inter_700Bold' },
-                        drawerLabelStyle: { fontFamily: 'Inter_700Bold' },
-                    })}
-                />
-                <Drawer.Screen
-                    name="clientes"
-                    options={({ navigation }) => ({
-                        title: 'Clientes',
-                        drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='users' />
-                        ),
-                        headerLeft: () => (
-                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
-                                <Feather
-                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
-                                    size={20}
-                                    name="menu"
-                                    backgroundColor="transparent"
-                                />
-                            </Button>
-                        ),
-                        headerRight: () => <ThemeToggle />,
-                        headerTitleStyle: { fontFamily: 'Inter_700Bold' },
-                        drawerLabelStyle: { fontFamily: 'Inter_700Bold' },
-                    })}
-                />
-                <Drawer.Screen
-                    name="(vendas)"
-                    options={({ navigation }) => ({
-                        title: 'Vendas',
-                        drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='shopping-cart' />
-                        ),
-                        headerLeft: () => (
-                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
-                                <Feather
-                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
-                                    size={20}
-                                    name="menu"
-                                    backgroundColor="transparent"
-                                />
-                            </Button>
-                        ),
-                        headerRight: () => <ThemeToggle />,
-                        headerTitleStyle: { fontFamily: 'Inter_700Bold' },
-                        drawerLabelStyle: { fontFamily: 'Inter_700Bold' },
-                    })}
-                />
-                <Drawer.Screen
-                    name="produtos"
-                    options={({ navigation }) => ({
-                        title: 'Produtos',
-                        drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='shopping-bag' />
-                        ),
-                        headerLeft: () => (
-                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
-                                <Feather
-                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
-                                    size={20}
-                                    name="menu"
-                                    backgroundColor="transparent"
-                                />
-                            </Button>
-                        ),
-                        headerRight: () => <ThemeToggle />,
-                        headerTitleStyle: { fontFamily: 'Inter_700Bold' },
-                        drawerLabelStyle: { fontFamily: 'Inter_700Bold' },
-                    })}
-                />
-                <Drawer.Screen
-                    name="categorias"
-                    options={({ navigation }) => ({
-                        title: 'Categorias',
-                        drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='tag' />
-                        ),
-                        headerLeft: () => (
-                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
-                                <Feather
-                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
-                                    size={20}
-                                    name="menu"
-                                    backgroundColor="transparent"
-                                />
-                            </Button>
-                        ),
-                        headerRight: () => <ThemeToggle />,
-                        headerTitleStyle: { fontFamily: 'Inter_700Bold' },
-                        drawerLabelStyle: { fontFamily: 'Inter_700Bold' },
-                    })}
-                />
-                <Drawer.Screen
-                    name="utilizadores"
-                    options={({ navigation }) => ({
-                        title: 'Utilizadores',
-                        drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='users' />
-                        ),
-                        headerLeft: () => (
-                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
-                                <Feather
-                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
-                                    size={20}
-                                    name="menu"
-                                    backgroundColor="transparent"
-                                />
-                            </Button>
-                        ),
-                        headerRight: () => <ThemeToggle />,
-                        headerTitleStyle: { fontFamily: 'Inter_700Bold' },
-                        drawerLabelStyle: { fontFamily: 'Inter_700Bold' },
-                    })}
-                />
-                <Drawer.Screen
-                    name="relatorios"
-                    options={({ navigation }) => ({
-                        title: 'Relatórios',
-                        drawerIcon: () => (
-                            <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={20} name='file-text' />
-                        ),
-                        headerLeft: () => (
-                            <Button variant={'ghost'} onPress={() => navigation.toggleDrawer()}>
-                                <Feather
-                                    color={isDarkColorScheme ? '#FFFFFF' : '#000000'}
-                                    size={20}
-                                    name="menu"
-                                    backgroundColor="transparent"
-                                />
-                            </Button>
-                        ),
-                        headerRight: () => <ThemeToggle />,
-                        headerTitleStyle: { fontFamily: 'Inter_700Bold' },
-                        drawerLabelStyle: { fontFamily: 'Inter_700Bold' },
-                    })}
-                />
+                {screens.map((screen) => (
+                    <Drawer.Screen
+                        key={screen.name}
+                        name={screen.name}
+                        options={({ navigation }) => ({
+                            title: screen.title,
+                            drawerIcon: () => renderDrawerIcon(screen.icon),
+                            ...getScreenOptions(navigation),
+                        })}
+                    />
+                ))}
             </Drawer>
         </GestureHandlerRootView>
     );

@@ -31,14 +31,14 @@ export function ThemeToggle() {
           isDarkColorScheme ? (
             <Sun
               className={cn('text-foreground', pressed && 'opacity-70')}
-              size={30}
+              size={25}
               strokeWidth={1.25}
               color="#FFFFFF"
             />
           ) : (
             <Moon
               className={cn('text-foreground', pressed && 'opacity-70')}
-              size={30}
+              size={25}
               color="#000000"
               strokeWidth={1.25}
             />
@@ -46,7 +46,7 @@ export function ThemeToggle() {
         }
       </Pressable>
       <Pressable className='mt-1' onPress={logout}>
-        <LogOut color={isDarkColorScheme ? "#FFFFFF" : "#000000"}/>
+        <LogOut size={20} color={isDarkColorScheme ? "#FFFFFF" : "#000000"}/>
       </Pressable>
     </View>
   );

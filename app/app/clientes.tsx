@@ -10,9 +10,10 @@ import { Button } from "~/components/ui/button";
 import api from "~/api";
 import { Text } from "~/components/ui/text";
 import { Cliente } from "~/types";
+import { useAuth } from "~/context/AuthContext";
 
 export default function Clientes(){
-      
+    const {data: user} = useAuth()
     const [open, setOpen] = useState(false)
     const [editMode, setEditMode] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -152,7 +153,7 @@ export default function Clientes(){
     const columns = [
         { key: 'nome', label: 'Nome', minWidth: 150 },
         { key: 'bi', label: 'Nº BI', minWidth: 150 },
-        { key: 'email', label: 'Email', minWidth: 200 },
+        { key: 'email', label: 'Email', minWidth: 250 },
         { key: 'telefone', label: 'Telefone', minWidth: 200 },
         {
           key: 'editar',
@@ -179,6 +180,7 @@ export default function Clientes(){
                 size="icon"
                 className="shadow-sm shadow-foreground/10 mr-3 bg-red-500"
                 onPress={() => confirmarExclusao(item.id)}
+                disabled={user?.nivel === 'USUARIO'}
               >
                 <Trash size={14} color={"#FFFFFF"} />
               </Button>

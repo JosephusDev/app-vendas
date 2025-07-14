@@ -123,8 +123,7 @@ export default function Item() {
       limparFormulario();
       carregarItens();
     } catch (err) {
-      console.error('Erro ao adicionar item:', err);
-      Alert.alert('Erro', 'Falha ao adicionar item');
+      Alert.alert('Erro', 'Stock insuficiente');
     }
   };
 
@@ -148,8 +147,7 @@ export default function Item() {
       limparFormulario();
       carregarItens();
     } catch (err) {
-      console.error('Erro ao atualizar item:', err);
-      Alert.alert('Erro', 'Falha ao atualizar item');
+      Alert.alert('Erro', 'Stock insuficiente');
     }
   };
 
@@ -287,7 +285,6 @@ export default function Item() {
     : itens;
 
   return (
-    <PrivateNavigation>
       <View>
         <View className="flex justify-center items-center h-screen">
           {loading ? (
@@ -358,6 +355,5 @@ export default function Item() {
         </View>
         <FloatButton icon={<Plus size={24} color={"#FFF"} />} aoClicar={abrirAdicao}/>
       </View>
-    </PrivateNavigation>
   );
 }

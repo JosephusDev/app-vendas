@@ -2,8 +2,31 @@ import prisma from '../config/prisma'
 import { VendaItem } from '@prisma/client'
 
 export const create = async (data: Omit<VendaItem, 'id' | 'created_at' | 'updated_at'>) => {
-  return await prisma.vendaItem.create({ data })
-}
+  const stock = await prisma.produto.findUnique({
+    where: {
+      id: data.produtoId
+    },
+    select: {
+      quantidade: true
+    }
+  })
+  if (stock?.quantidade! < data.quantidade) {
+    throw new Error('Quantidade insuficiente')
+  }
+  return await prisma.$transaction([
+    prisma.vendaItem.create({ data }),
+    prisma.produto.update({
+      data: {
+        quantidade: {
+          decrement: data.quantidade
+        }
+      },
+      where: {
+        id: data.produtoId
+      }
+    })
+  ]);
+};
 
 export const getAll = async ({vendaId}: {vendaId: string}) => { 
   const itens = await prisma.vendaItem.findMany({
@@ -43,9 +66,78 @@ export const getAll = async ({vendaId}: {vendaId: string}) => {
 }
 
 export const update = async (id: string, data: Partial<VendaItem>) => {
-  return await prisma.vendaItem.update({ where: { id }, data })
+  const stock = await prisma.produto.findUnique({
+    where: {
+      id: data.produtoId
+    },
+    select: {
+      quantidade: true
+    }
+  })
+  if (stock?.quantidade! < data.quantidade!) {
+    throw new Error('Quantidade insuficiente')
+  }
+  const item = await prisma.vendaItem.findUnique({
+    where: {
+      id
+    },
+    select: {
+      quantidade: true
+    }
+  })
+  if (item?.quantidade! > data.quantidade!) {
+    await prisma.$transaction([
+        prisma.produto.update({
+          data: {
+            quantidade: {
+              increment: item?.quantidade! - data.quantidade!
+            }
+          },
+          where: {
+            id: data.produtoId
+          }
+        }),
+        prisma.vendaItem.update({ where: { id }, data })
+    ])
+  }
+  else if (item?.quantidade! < data.quantidade!) {
+    await prisma.$transaction([
+        prisma.produto.update({
+          data: {
+            quantidade: {
+              decrement: data.quantidade! - item?.quantidade!
+            }
+          },
+          where: {
+            id: data.produtoId
+          }
+        }),
+        prisma.vendaItem.update({ where: { id }, data })
+    ])
+  }
 }
 
 export const remove = async (id: string) => {
-  return await prisma.vendaItem.delete({ where: { id } })
+  const data = await prisma.vendaItem.findUnique({
+    where: {
+      id
+    },
+    include: {
+      produto: true,
+      venda: true
+    }
+  })
+  return await prisma.$transaction([
+    prisma.produto.update({
+      data: {
+        quantidade: {
+          increment: data?.quantidade
+        }
+      },
+      where: {
+        id: data?.produtoId
+      }
+    }),
+    prisma.vendaItem.delete({ where: { id } })
+  ])
 }

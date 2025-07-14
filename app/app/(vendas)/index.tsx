@@ -1,4 +1,4 @@
-import { Edit, Eye, Plus, Trash } from "lucide-react-native";
+import { Edit, Eye, Plus, Printer, Trash } from "lucide-react-native";
 import { Fragment, useEffect, useState } from "react";
 import { Alert, View, ActivityIndicator } from "react-native";
 import { FloatButton } from "~/components/FloatButton";
@@ -247,6 +247,7 @@ export default function Vendas() {
           size="icon"
           className="shadow-sm shadow-foreground/10 mr-3 bg-blue-500"
           onPress={() => abrirItensVenda(item.id)}
+          disabled={item.status === 'CONCLUIDA' && user?.nivel === 'USUARIO'}
         >
           <Eye size={14} color={"#FFFFFF"} />
         </Button>
@@ -262,6 +263,7 @@ export default function Vendas() {
           size="icon"
           className="shadow-sm shadow-foreground/10 mr-3 bg-primary"
           onPress={() => abrirEdicao(item)}
+          disabled={item.status === 'CONCLUIDA' && user?.nivel === 'USUARIO'}
         >
           <Edit size={14} color={"#FFFFFF"} />
         </Button>
@@ -277,8 +279,24 @@ export default function Vendas() {
           size="icon"
           className="shadow-sm shadow-foreground/10 mr-3 bg-red-500"
           onPress={() => confirmarExclusao(item.id)}
+          disabled={item.status === 'CONCLUIDA' && user?.nivel === 'USUARIO'}
         >
           <Trash size={14} color={"#FFFFFF"} />
+        </Button>
+      ),
+    },
+    {
+      key: 'imprimir',
+      label: 'Imprimir',
+      minWidth: 80,
+      renderCell: (item: VendaDetalhada) => (
+        <Button
+          variant="outline"
+          size="icon"
+          className="shadow-sm shadow-foreground/10 mr-3 bg-green-500"
+          onPress={() => {}}
+        >
+          <Printer size={14} color={"#FFFFFF"} />
         </Button>
       ),
     },
@@ -298,7 +316,6 @@ export default function Vendas() {
   ];
 
   return (
-    <PrivateNavigation>
       <View>
         <View className="flex justify-center items-center h-screen">
           {loading ? (
@@ -357,6 +374,5 @@ export default function Vendas() {
         </View>
         <FloatButton icon={<Plus size={24} color={"#FFF"} />} aoClicar={abrirAdicao}/>
       </View>
-    </PrivateNavigation>
   );
 }

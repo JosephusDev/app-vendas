@@ -14,7 +14,7 @@ interface IData{
     nome: string;
 }
 
-type typeBadge = "Data" | "Categoria" | "Fornecedor" | "Utilizador" | null
+type typeBadge = "Data" | "Categoria" | "Cliente" | "Utilizador" | null
 
 export default function Relatorios() {
 
@@ -54,18 +54,18 @@ export default function Relatorios() {
         }
     ]
     
-    const fornecedor = [
+    const Cliente = [
         {
             id: 1,
-            nome: "Fornecedor 1"
+            nome: "Cliente 1"
         },
         {
             id: 2,
-            nome: "Fornecedor 2"
+            nome: "Cliente 2"
         },
         {
             id: 3,
-            nome: "Fornecedor 3"
+            nome: "Cliente 3"
         }
     ]
     
@@ -117,9 +117,9 @@ export default function Relatorios() {
                 setSelectedData(categoria)
                 setTitle("Selecione a Categoria")
                 break
-            case "Fornecedor":
-                setSelectedData(fornecedor)
-                setTitle("Selecione o Fornecedor")
+            case "Cliente":
+                setSelectedData(Cliente)
+                setTitle("Selecione o Cliente")
                 break
             case "Utilizador":
                 setSelectedData(utilizador)
@@ -140,7 +140,7 @@ export default function Relatorios() {
                         <MyBadge onPressBadge={()=>onChangeBadge("Categoria")} text="Categoria" icon="tag" />
                     </View>
                     <View className="flex flex-row gap-x-4">
-                        <MyBadge onPressBadge={()=>onChangeBadge("Fornecedor")} text="Fornecedor" icon="user" />
+                        <MyBadge onPressBadge={()=>onChangeBadge("Cliente")} text="Cliente" icon="user" />
                         <MyBadge onPressBadge={()=>onChangeBadge("Utilizador")} text="Utilizador" icon="user" />
                     </View>
                 </View>
@@ -148,7 +148,7 @@ export default function Relatorios() {
                 <View className="w-[90%] gap-y-2">
                     <DropdownComponent options={mySelectData} title={title} />
                     <View className="flex flex-row justify-end gap-x-1 mt-2">
-                        <Button  className="flex flex-row gap-x-1 border-primary">
+                        <Button className="flex flex-row gap-x-1 border-primary">
                             <Printer size={18} color={"#FFFFFF"}/>
                         </Button>
                     </View>

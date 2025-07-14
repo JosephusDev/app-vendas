@@ -182,6 +182,7 @@ export default function Produtos(){
     const columns = [
         { key: 'nome', label: 'Nome', minWidth: 150 },
         { key: 'descricao', label: 'Descrição', minWidth: 200 },
+        { key: 'quantidade', label: 'Quantidade', minWidth: 100 },
         { key: 'preco', label: 'Preço', minWidth: 200, 
           renderCell: (item: Produto) => <Text>{Number(item.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' })}</Text> 
         },
@@ -191,7 +192,6 @@ export default function Produtos(){
         { key: 'total', label: 'Total', minWidth: 200, 
           renderCell: (item: Produto) => <Text>{(Number(item.preco) * (1 + Number(item.iva) / 100)).toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' })}</Text>
         },
-        { key: 'quantidade', label: 'Quantidade', minWidth: 100 },
         { key: 'categoria', label: 'Categoria', minWidth: 150,
           renderCell: (item: Produto) => <Text>{item.categoria || 'N/A'}</Text>
         },
