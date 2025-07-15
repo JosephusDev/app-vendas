@@ -12,7 +12,7 @@ const Text = React.forwardRef<TextRef, SlottableTextProps>(
     const Component = asChild ? Slot.Text : RNText;
     return (
       <Component
-        className={cn('font-regular text-base text-foreground web:select-text', textClass, className)}
+        className={cn('font-regular text-md text-foreground web:select-text', textClass, className)}
         ref={ref}
         {...props}
       />

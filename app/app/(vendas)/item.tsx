@@ -10,7 +10,6 @@ import api from "~/api";
 import { Text } from "~/components/ui/text";
 import { Produto } from "~/types";
 import Toast from "react-native-toast-message";
-import PrivateNavigation from "~/components/PrivateNavigation";
 import { useNavigation } from "expo-router";
 import { useLocalSearchParams } from "expo-router";
 import Feather from "@expo/vector-icons/Feather";
@@ -242,7 +241,7 @@ export default function Item() {
       minWidth: 150,
       renderCell: (item: VendaItem) => (
         <Text className="font-semibold">
-          {item.total.toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' })}
+          {item.total.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}
         </Text>
       )
     },
@@ -309,7 +308,7 @@ export default function Item() {
               </View>
               <View className="px-8 mt-8 self-start flex flex-row justify-between items-center w-full">
                 <Text className="text-md">
-                  <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={18} name='dollar-sign' /> {totalGeral.toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' })}
+                  <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={18} name='credit-card' /> {totalGeral.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}
                 </Text>
                 <Text className="text-md">
                   <Feather color={isDarkColorScheme ? '#FFFFFF' : '#000000'} size={18} name='shopping-cart' /> {itensFiltrados.length} {itensFiltrados.length === 1 ? 'item' : 'itens'}

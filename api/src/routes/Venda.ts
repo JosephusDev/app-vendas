@@ -4,14 +4,17 @@ import {
   atualizar,
   cadastrar,
   eliminar,
-  carregarUnico
+  carregarUnico,
+  carregarTodosComTotal
 } from '../controllers/Venda'
 
 const router = Router()
 
+
+router.get('/total', carregarTodosComTotal)
+router.get('/:id', carregarUnico)
 router.get('/', carregarTodos)
 router.post('/', cadastrar)
-router.get('/:id', carregarUnico)
 router.put('/:id', atualizar)
 router.delete('/:id', eliminar)
 

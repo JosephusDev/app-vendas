@@ -10,12 +10,12 @@ import { useColorScheme } from '~/lib/useColorScheme';
 import * as SplashScreen from 'expo-splash-screen';
 import { Platform } from 'react-native';
 import { 
-  Inter_900Black, 
-  Inter_700Bold, 
-  Inter_500Medium, 
-  Inter_400Regular, 
+  Nunito_900Black, 
+  Nunito_700Bold, 
+  Nunito_500Medium, 
+  Nunito_400Regular, 
   useFonts 
-} from '@expo-google-fonts/inter';
+} from '@expo-google-fonts/nunito';
 import Toast from 'react-native-toast-message';
 import DrawerComponent from '~/components/Drawer'; 
 import LoginScreen from '~/components/LoginScreen'; 
@@ -36,10 +36,10 @@ export default function Layout () {
   const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false); 
 
   const [fontsLoaded] = useFonts({
-    Inter_900Black,
-    Inter_700Bold,
-    Inter_500Medium,
-    Inter_400Regular,
+    Nunito_900Black,
+    Nunito_700Bold,
+    Nunito_500Medium,
+    Nunito_400Regular,
   });
 
   useEffect(() => {

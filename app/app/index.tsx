@@ -4,6 +4,7 @@ import { ScrollView, View } from "react-native";
 import api from "~/api";
 import BarChartHome from "~/components/BarChartHome";
 import CardHome from "~/components/CardHome";
+import { TotalVendidoPorProduto } from "~/types";
 
 
 export default function Index(){
@@ -12,6 +13,8 @@ export default function Index(){
     const [clientes, setClientes] = useState(0)
     const [produtos, setProdutos] = useState(0)
     const [totalArrecadado, setTotalArrecadado] = useState(0);
+    const [produtosMaisVendidos, setProdutosMaisVendidos] = useState<TotalVendidoPorProduto>([])
+    const [menosVendidos, setMenosVendidos] = useState<TotalVendidoPorProduto>([])
 
     const carregarProdutos = async () => {
         try {
@@ -32,14 +35,31 @@ export default function Index(){
     }
 
     const carregarVendas = async () => {
-    try {
-      const response = await api.get('/venda');
-      const data = response.data;
-      setTotalArrecadado(data.total_arrecadado);
-    } catch (err) {
-      console.error('Erro ao carregar vendas:', err);
+        try {
+            const response = await api.get('/venda/total')
+            setTotalArrecadado(response.data.total_arrecadado)
+        } catch (err) {
+            console.error('Erro ao carregar vendas:', err)
+        }
     }
-  };
+
+    const carregarProdutosMaisVendidos = async () => {
+        try {
+            const response = await api.get<TotalVendidoPorProduto>('/produto/total')
+            setProdutosMaisVendidos(response.data)
+        } catch (err) {
+            console.error('Erro ao carregar produtos por total vendido:', err)
+        }
+    }
+
+    const carregarMenosVendidos = async () => {
+        try {
+            const response = await api.get<TotalVendidoPorProduto>('/produto/total?menos_vendidos=true')
+            setMenosVendidos(response.data)
+        } catch (err) {
+            console.error('Erro ao carregar produtos menos vendidos:', err)
+        }
+    }
 
     const navigation = useNavigation()
 
@@ -49,6 +69,8 @@ export default function Index(){
         carregarProdutos()
         carregarClientes()
         carregarVendas()
+        carregarProdutosMaisVendidos()
+        carregarMenosVendidos()
         setLoading(false)
       })
 
@@ -57,7 +79,7 @@ export default function Index(){
 
     return (
         <ScrollView>
-            <View className="flex items-center gap-y-1 mx-4"> 
+            <View className="flex items-center gap-y-1 mx-4 mb-8"> 
                 <CardHome
                     title="Produtos"
                     icon="shopping-bag"
@@ -68,7 +90,7 @@ export default function Index(){
                     title="Vendas"
                     icon="shopping-cart"
                     description="Total arrecadado nas vendas"
-                    content={`${totalArrecadado.toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' })}`}
+                    content={`${totalArrecadado.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}`}
                 />
                 <CardHome
                     title="Clientes"
@@ -76,7 +98,8 @@ export default function Index(){
                     description="Total de clientes"
                     content={`${clientes} cliente(s)`}
                 />
-                <BarChartHome/>
+                <BarChartHome type="mais" data={produtosMaisVendidos} />
+                <BarChartHome type="menos" data={menosVendidos} />
             </View>
         </ScrollView>
     )

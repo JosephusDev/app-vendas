@@ -104,19 +104,19 @@ const styles = StyleSheet.create({
     zIndex: 999,
     paddingHorizontal: 8,
     fontSize: 13,
-    fontFamily: "Inter_500Medium",
+    fontFamily: "Nunito_500Medium",
   },
   placeholderStyle: {
     fontSize: 14,
-    fontFamily: "Inter_400Regular",
+    fontFamily: "Nunito_400Regular",
   },
   selectedTextStyle: {
-    fontSize: 14,
-    fontFamily: "Inter_400Regular",
+    fontSize: 15,
+    fontFamily: "Nunito_500Medium",
   },
   inputSearchStyle: {
     height: 40,
     fontSize: 14,
-    fontFamily: "Inter_700Bold",
+    fontFamily: "Nunito_700Bold",
   },
 });

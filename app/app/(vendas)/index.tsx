@@ -1,4 +1,4 @@
-import { Edit, Eye, Plus, Printer, Trash } from "lucide-react-native";
+import { Edit, Eye, Plus, Printer, Trash, Calendar, X, CreditCard } from "lucide-react-native";
 import { Fragment, useEffect, useState } from "react";
 import { Alert, View, ActivityIndicator } from "react-native";
 import { FloatButton } from "~/components/FloatButton";
@@ -10,10 +10,12 @@ import api from "~/api";
 import { Text } from "~/components/ui/text";
 import { Venda, Cliente } from "~/types";
 import Toast from "react-native-toast-message";
-import PrivateNavigation from "~/components/PrivateNavigation";
 import { router, useNavigation } from "expo-router";
 import { useAuth } from "~/context/AuthContext";
 import DropdownComponent from "~/components/Dropdown";
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Card } from "~/components/ui/card";
+import { useColorScheme } from "~/lib/useColorScheme";
 
 type VendaDetalhada = Venda & {
   cliente: { nome: string };
@@ -28,13 +30,13 @@ type VendasResponse = {
 
 export default function Vendas() {
   const {data: user} = useAuth()
+  const {isDarkColorScheme} = useColorScheme()
   const [open, setOpen] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
   const [vendas, setVendas] = useState<VendaDetalhada[]>([]);
-  const [totalArrecadado, setTotalArrecadado] = useState(0);
   const [clientes, setClientes] = useState<Pick<Cliente, 'id' | 'nome'>[]>([]);
   const [vendaAtual, setVendaAtual] = useState<Venda>({
     id: '',
@@ -43,6 +45,10 @@ export default function Vendas() {
     dataVenda: new Date().toISOString().split('T')[0],
     status: 'PENDENTE'
   });
+
+  // Estados para o filtro de data
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const carregarClientes = async () => {
     try {
@@ -61,7 +67,6 @@ export default function Vendas() {
       const response = await api.get('/venda');
       const data: VendasResponse = response.data;
       setVendas(data.vendas);
-      setTotalArrecadado(data.total_arrecadado);
     } catch (err) {
       console.error('Erro ao carregar vendas:', err);
       setError('Falha ao carregar vendas. Tente novamente.');
@@ -178,6 +183,19 @@ export default function Vendas() {
     setOpen(true);
   };
 
+  // Função para lidar com a mudança de data
+  const onDateChange = (event: any, selectedDate?: Date) => {
+    setShowDatePicker(false);
+    if (selectedDate) {
+      setSelectedDate(selectedDate);
+    }
+  };
+
+  // Função para limpar o filtro de data
+  const limparFiltroData = () => {
+    setSelectedDate(null);
+  };
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -211,16 +229,16 @@ export default function Vendas() {
       key: 'dataVenda', 
       label: 'Data da Venda', 
       minWidth: 150,
-      renderCell: (item: VendaDetalhada) => <Text>{new Date(item.dataVenda).toLocaleDateString('pt-BR')}</Text>
+      renderCell: (item: VendaDetalhada) => <Text>{new Date(item.dataVenda).toLocaleDateString('pt-AO')}</Text>
     },
     { 
       key: 'status', 
       label: 'Status', 
       minWidth: 120,
       renderCell: (item: VendaDetalhada) => (
-        <Text className={`px-2 py-1 rounded-full text-xs ${
+        <Text className={`px-2 py-1 rounded-full text-xs font-regular ${
           item.status === 'PENDENTE' ? 'bg-yellow-100 text-yellow-800' :
-          item.status === 'CONCLUIDA' ? 'bg-green-100 text-green-800' :
+          item.status === 'CONCLUIDA' ? 'bg-[#1DD1A1] text-white' :
           'bg-red-100 text-red-800'
         }`}>
           {item.status}
@@ -233,7 +251,7 @@ export default function Vendas() {
       minWidth: 150,
       renderCell: (item: VendaDetalhada) => (
         <Text className="font-semibold">
-          {item.total_geral.toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' })}
+          {item.total_geral.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}
         </Text>
       )
     },
@@ -302,12 +320,20 @@ export default function Vendas() {
     },
   ];
 
-  const vendasFiltradas = search 
-    ? vendas.filter((venda) =>
-        venda.cliente.nome.toLowerCase().includes(search.toLowerCase()) ||
-        venda.usuario.nome.toLowerCase().includes(search.toLowerCase())
-      )
-    : vendas;
+  // Filtrar vendas por nome do cliente/usuário e data
+  const vendasFiltradas = vendas.filter((venda) => {
+    const matchesSearch = !search || 
+      venda.cliente.nome.toLowerCase().includes(search.toLowerCase()) ||
+      venda.usuario.nome.toLowerCase().includes(search.toLowerCase());
+    
+    const matchesDate = !selectedDate || 
+      new Date(venda.dataVenda).toDateString() === selectedDate.toDateString();
+    
+    return matchesSearch && matchesDate;
+  });
+
+  // Calcular total arrecadado das vendas filtradas
+  const totalArrecadado = vendasFiltradas.reduce((total, venda) => total + venda.total_geral, 0);
 
   const statusOptions = [
     { id: 'PENDENTE', nome: 'Pendente' },
@@ -331,14 +357,69 @@ export default function Vendas() {
             </View>
           ) : (
             <Fragment>
-              <View className="mt-20 w-2/3">
-                <MyInput 
-                  dica="Pesquisar venda"
-                  valor={search}
-                  onChangeText={setSearch}
-                />
+              <View className="mt-36 w-full flex-row items-center justify-center gap-3 p-4">
+                <View className="flex-1">
+                  <MyInput 
+                    dica="Pesquisar por cliente ou usuário"
+                    valor={search}
+                    onChangeText={setSearch}
+                  />
+                </View>
+                
+                <Button
+                  size="icon"
+                  className="shadow-sm shadow-foreground/10 bg-primary h-12 w-12 mt-5"
+                  onPress={() => setShowDatePicker(true)}
+                >
+                  <Calendar size={20} color={"#FFFFFF"} />
+                </Button>
+                
+                {selectedDate && (
+                  <Button
+                    size="sm"
+                    className="shadow-sm shadow-foreground/10 bg-red-500 h-12 w-12 mt-5"
+                    onPress={limparFiltroData}
+                  >
+                    <X size={20} color={"#FFFFFF"} />
+                  </Button>
+                )}
               </View>
+              
+              <View className="w-full p-4 mx-16">
+                <View className="flex-row justify-between items-center">
+                  <View className="flex-1 flex-row gap-2 items-center">
+                    <CreditCard size={20} color={isDarkColorScheme ? '#fff' : '#000'} />
+                    <Text className="text-lg">
+                      {totalArrecadado.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}
+                    </Text>
+                  </View>
+                  {selectedDate && (
+                    <View className="flex-1 flex-row items-center justify-end gap-2">
+                      <Calendar size={20} color={isDarkColorScheme ? '#fff' : '#000'} />
+                      <Text className="text-lg">
+                        {selectedDate.toLocaleDateString('pt-AO', { 
+                          day: '2-digit', 
+                          month: '2-digit', 
+                          year: 'numeric' 
+                        })}
+                      </Text>
+                    </View>
+                  )}
+                </View>
+              </View>
+              
               <MyTable data={vendasFiltradas} columns={columns} />
+              
+              {showDatePicker && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={selectedDate || new Date()}
+                  mode="date"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onDateChange}
+                />
+              )}
             </Fragment>
           )}
           

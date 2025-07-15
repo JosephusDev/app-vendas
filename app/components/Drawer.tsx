@@ -35,8 +35,8 @@ export default function DrawerComponent({ isDarkColorScheme }: IProps) {
     const getScreenOptions = (navigation: any) => ({
         headerLeft: () => renderMenuButton(navigation),
         headerRight: () => <ThemeToggle />,
-        headerTitleStyle: { fontFamily: 'Inter_700Bold', fontSize: 16 },
-        drawerLabelStyle: { fontFamily: 'Inter_700Bold', fontSize: 14 },
+        headerTitleStyle: { fontFamily: 'Nunito_700Bold', fontSize: 16 },
+        drawerLabelStyle: { fontFamily: 'Nunito_700Bold', fontSize: 14 },
     });
 
     const screens: DrawerScreenConfig[] = [

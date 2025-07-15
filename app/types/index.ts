@@ -38,3 +38,9 @@ export type Venda = {
     usuarioId: string;
     clienteId: string;
 }
+
+export type TotalVendidoPorProduto = {
+    produtoId: string;
+    nome: string | undefined;
+    total: number | null;
+}[]

@@ -7,6 +7,7 @@ import { Usuario } from '~/types';
 interface AuthContextType {
     data: Usuario | null
     isAuthenticated: boolean;
+    isLoading: boolean
     login: (username: string, password: string) => void
     logout: () => void
 }
@@ -16,19 +17,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setAuthenticated] = useState(false);
     const [data, setData] = useState<Usuario | null>(null);
+    const [isLoading, setIsLoading] = useState(false)
     const login = async (usuario: string, senha: string) =>{
+        setIsLoading(true)
         await api.post('/usuarios/login', {usuario, senha})
         .then((response)=>{
             const data = response.data
             if(data){
                 setAuthenticated(true);
                 setData(data);
-                Toast.show({
-                    text1: 'Aviso',
-                    text2: 'Seja bem-vindo(a).',
-                    type: 'success',
-                    visibilityTime: 3000
-                })
             }else{
                 Toast.show({
                     text1: 'Aviso',
@@ -39,6 +36,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             }
         })
         .catch((error) => console.log(error))
+        .finally(()=>setIsLoading(false))
     }
 
     const logout = () =>{
@@ -47,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout, data }}>
+        <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout, data }}>
             {children}
         </AuthContext.Provider>
     );

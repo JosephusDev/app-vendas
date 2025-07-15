@@ -46,9 +46,9 @@ module.exports = {
         hairline: hairlineWidth(),
       },
       fontFamily: {
-        regular: "Inter_700Bold",
-        bold: "Inter_700Bold",
-        medium: "Inter_500Medium"
+        regular: "Nunito_500Medium",
+        bold: "Nunito_700Bold",
+        medium: "Nunito_500Medium"
       },
       keyframes: {
         'accordion-down': {

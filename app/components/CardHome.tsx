@@ -16,7 +16,7 @@ export default function CardHome(
 ){
     const { isDarkColorScheme } = useColorScheme();
     return (
-        <Card className="w-full bg-secondary mt-5 border-secondary-foreground">
+        <Card className="w-full bg-secondary mt-5">
             <CardHeader>
                 <CardTitle className="flex flex-row justify-between items-center">
                     <View className="flex flex-row items-center">
@@ -24,7 +24,7 @@ export default function CardHome(
                         <Text className="font-medium text-xl ml-2">{title}</Text>
                     </View>
                 </CardTitle>
-                <CardDescription className="mt-1">{description}</CardDescription>
+                <CardDescription className="mt-1 font-medium">{description}</CardDescription>
             </CardHeader>
             <CardContent><Text className="text-xl font-medium">{content}</Text></CardContent>
         </Card>

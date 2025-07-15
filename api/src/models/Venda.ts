@@ -52,6 +52,56 @@ export const getAll = async () => {
   };
 };
 
+export const getAllWithTotalAmounted = async () => {
+  const vendas = await prisma.venda.findMany({
+    select: {
+      id: true,
+      clienteId: true,
+      dataVenda: true,
+      status: true,
+      usuarioId: true,
+      cliente: {
+        select: {
+          nome: true
+        }
+      },
+      usuario: {
+        select: {
+          nome: true
+        }
+      },
+      itens: {
+        select: {
+          total: true
+        }
+      }
+    },
+    where: {
+      status: 'CONCLUIDA',
+    },
+    orderBy: {
+      dataVenda: 'asc',
+    },
+  });
+
+  // Calcular o total arrecadado por venda
+  const vendasComTotais = vendas.map(venda => {
+    const totalArrecadado = venda.itens.reduce((acc, item) => acc + item.total, 0);
+    return {
+      ...venda,
+      total_geral: totalArrecadado,
+    };
+  });
+
+  // Calcular o total geral
+  const total_arrecadado = vendasComTotais.reduce((acc, venda) => acc + venda.total_geral, 0);
+
+  return {
+    vendas: vendasComTotais,
+    total_arrecadado,
+  };
+};
+
 
 export const getUnique = async (id: string) => {
   return await prisma.venda.findUnique({ 

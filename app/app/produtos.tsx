@@ -184,13 +184,13 @@ export default function Produtos(){
         { key: 'descricao', label: 'Descrição', minWidth: 200 },
         { key: 'quantidade', label: 'Quantidade', minWidth: 100 },
         { key: 'preco', label: 'Preço', minWidth: 200, 
-          renderCell: (item: Produto) => <Text>{Number(item.preco).toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' })}</Text> 
+          renderCell: (item: Produto) => <Text>{Number(item.preco).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}</Text> 
         },
         { key: 'iva', label: 'IVA', minWidth: 80,
           renderCell: (item: Produto) => <Text>{item.iva}%</Text>
         },
         { key: 'total', label: 'Total', minWidth: 200, 
-          renderCell: (item: Produto) => <Text>{(Number(item.preco) * (1 + Number(item.iva) / 100)).toLocaleString('pt-BR', { style: 'currency', currency: 'AOA' })}</Text>
+          renderCell: (item: Produto) => <Text>{(Number(item.preco) * (1 + Number(item.iva) / 100)).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })}</Text>
         },
         { key: 'categoria', label: 'Categoria', minWidth: 150,
           renderCell: (item: Produto) => <Text>{item.categoria || 'N/A'}</Text>

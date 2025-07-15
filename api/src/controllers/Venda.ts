@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import {
   create, 
-  getAll, 
+  getAll,
+  getAllWithTotalAmounted, 
   getUnique, 
   remove, 
   update
@@ -35,6 +36,15 @@ export const carregarUnico = async (req: Request, res: Response) => {
 export const carregarTodos = async (req: Request, res: Response) => {
   try {
     const vendas = await getAll()
+    res.status(200).json(vendas)
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching', error })
+  }
+}
+
+export const carregarTodosComTotal = async (req: Request, res: Response) => {
+  try {
+    const vendas = await getAllWithTotalAmounted()
     res.status(200).json(vendas)
   } catch (error) {
     res.status(500).json({ message: 'Error fetching', error })
