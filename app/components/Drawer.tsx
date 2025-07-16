@@ -46,7 +46,6 @@ export default function DrawerComponent({ isDarkColorScheme }: IProps) {
         { name: 'produtos', title: 'Produtos', icon: 'shopping-bag' },
         { name: 'categorias', title: 'Categorias', icon: 'tag' },
         { name: 'utilizadores', title: 'Utilizadores', icon: 'users' },
-        { name: 'relatorios', title: 'Relatórios', icon: 'file-text' },
     ];
 
     return (

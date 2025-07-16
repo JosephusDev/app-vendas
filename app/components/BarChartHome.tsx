@@ -66,7 +66,7 @@ export default function BarChartHome(props: { data: TotalVendidoPorProduto, type
                   fontFamily: 'Nunito_700Bold',
                   color: isDarkColorScheme ? '#FFF' : '#000',
                   width: 100,
-                  textAlign: 'center'
+                  textAlign: 'left'
                 }}>
                   {item.value?.toLocaleString('pt-AO', {
                     style: 'currency',
