@@ -4,6 +4,7 @@ import {
   create, 
   getAll, 
   getUnique, 
+  qtdSoldPerProduct, 
   remove, 
   update
 } from '../models/Produto'
@@ -44,10 +45,16 @@ export const carregarTodos = async (req: Request, res: Response) => {
 
 export const carregarProdutosPorTotalVendido = async (req: Request, res: Response) => {
   try {
-    const { menos_vendidos } = req.query
-    const produtos = await amountCollectedPerProduct({
-      menos_vendidos: menos_vendidos === 'true'
-    })
+    const produtos = await amountCollectedPerProduct()
+    res.status(200).json(produtos)
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching', error })
+  }
+}
+
+export const carregarProdutosPorQtdVendida = async (req: Request, res: Response) => {
+  try {
+    const produtos = await qtdSoldPerProduct()
     res.status(200).json(produtos)
   } catch (error) {
     res.status(500).json({ message: 'Error fetching', error })

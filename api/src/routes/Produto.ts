@@ -5,12 +5,14 @@ import {
   cadastrar,
   eliminar,
   carregarUnico,
-  carregarProdutosPorTotalVendido
+  carregarProdutosPorTotalVendido,
+  carregarProdutosPorQtdVendida
 } from '../controllers/Produto'
 
 const router = Router()
 
 router.get('/total', carregarProdutosPorTotalVendido)
+router.get('/qtd', carregarProdutosPorQtdVendida)
 router.get('/:id', carregarUnico)
 router.get('/', carregarTodos)
 router.post('/', cadastrar)

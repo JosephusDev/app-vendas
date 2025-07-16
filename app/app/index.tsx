@@ -13,8 +13,8 @@ export default function Index(){
     const [clientes, setClientes] = useState(0)
     const [produtos, setProdutos] = useState(0)
     const [totalArrecadado, setTotalArrecadado] = useState(0);
-    const [produtosMaisVendidos, setProdutosMaisVendidos] = useState<TotalVendidoPorProduto>([])
-    const [menosVendidos, setMenosVendidos] = useState<TotalVendidoPorProduto>([])
+    const [produtosMaisVendidosPorTotal, setProdutosMaisVendidosPorTotal] = useState<TotalVendidoPorProduto>([])
+    const [produtosMaisVendidosPorQtd, setProdutosMaisVendidosPorQtd] = useState<TotalVendidoPorProduto>([])
 
     const carregarProdutos = async () => {
         try {
@@ -43,21 +43,22 @@ export default function Index(){
         }
     }
 
-    const carregarProdutosMaisVendidos = async () => {
+    const carregarProdutosMaisVendidosPorTotal = async () => {
         try {
             const response = await api.get<TotalVendidoPorProduto>('/produto/total')
-            setProdutosMaisVendidos(response.data)
+            setProdutosMaisVendidosPorTotal(response.data)
+
         } catch (err) {
             console.error('Erro ao carregar produtos por total vendido:', err)
         }
     }
 
-    const carregarMenosVendidos = async () => {
+    const carregarProdutosMaisVendidosPorQtd = async () => {
         try {
-            const response = await api.get<TotalVendidoPorProduto>('/produto/total?menos_vendidos=true')
-            setMenosVendidos(response.data)
+            const response = await api.get<TotalVendidoPorProduto>('/produto/qtd')
+            setProdutosMaisVendidosPorQtd(response.data)
         } catch (err) {
-            console.error('Erro ao carregar produtos menos vendidos:', err)
+            console.error('Erro ao carregar produtos por qtd vendida:', err)
         }
     }
 
@@ -69,8 +70,8 @@ export default function Index(){
         carregarProdutos()
         carregarClientes()
         carregarVendas()
-        carregarProdutosMaisVendidos()
-        carregarMenosVendidos()
+        carregarProdutosMaisVendidosPorTotal()
+        carregarProdutosMaisVendidosPorQtd()
         setLoading(false)
       })
 
@@ -98,8 +99,8 @@ export default function Index(){
                     description="Total de clientes"
                     content={`${clientes} cliente(s)`}
                 />
-                <BarChartHome type="mais" data={produtosMaisVendidos} />
-                <BarChartHome type="menos" data={menosVendidos} />
+                <BarChartHome type="total" data={produtosMaisVendidosPorTotal} />
+                <BarChartHome type="qtd" data={produtosMaisVendidosPorQtd} />
             </View>
         </ScrollView>
     )

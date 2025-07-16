@@ -6,11 +6,11 @@ import { TotalVendidoPorProduto } from "~/types";
 import { Card, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { TrendingDown, TrendingUp } from "lucide-react-native";
 
-export default function BarChartHome(props: { data: TotalVendidoPorProduto, type: 'mais' | 'menos' }) {
+export default function BarChartHome(props: { data: TotalVendidoPorProduto, type: 'total' | 'qtd' }) {
   const { isDarkColorScheme } = useColorScheme();
   const {data, type} = props
   
-  const colors = type === 'menos' 
+  const colors = type === 'total' 
   ? ['#FF6B6B', '#A0EACD', '#1DD1A1'] 
   : ['#1DD1A1', '#A0EACD', '#FF6B6B'];
 
@@ -25,12 +25,8 @@ export default function BarChartHome(props: { data: TotalVendidoPorProduto, type
     <Card className="w-full bg-secondary mt-5">
       <CardHeader>
         <CardTitle className="flex flex-row justify-center items-center gap-4">
-          {type === 'mais' ? (
-            <TrendingUp size={15} color={isDarkColorScheme ? '#fff' : '#000'} />
-          ) : (
             <TrendingDown size={15} color={isDarkColorScheme ? '#fff' : '#000'} />
-          )}
-          <Text className="font-medium text-xl ml-2"> {type === 'mais' ? 'Mais Vendidos' : 'Menos Vendidos'}</Text>
+          <Text className="font-medium text-xl ml-2"> {type === 'total' ? 'Mais Vendidos por Total' : 'Mais Vendidos por Qtd'}</Text>
         </CardTitle>
         <CardDescription>
           <View>
@@ -68,10 +64,10 @@ export default function BarChartHome(props: { data: TotalVendidoPorProduto, type
                   width: 100,
                   textAlign: 'left'
                 }}>
-                  {item.value?.toLocaleString('pt-AO', {
+                  {type === 'total' ? item.value?.toLocaleString('pt-AO', {
                     style: 'currency',
                     currency: 'AOA'
-                  })}
+                  }) : item.value?.toString() + ' unidade(s)'}
                 </Text>
               )}
             />
