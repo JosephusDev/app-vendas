@@ -18,8 +18,8 @@ export const getAll = async () => {
   })
 }
 
-export const getUnique = async (usuario: string, senha: string) => {
-  return await prisma.usuario.findFirst({ where: { usuario, senha } })
+export const getUnique = async (usuario: string) => {
+  return await prisma.usuario.findFirst({ where: { usuario } })
 }
 
 export const update = async (id: string, data: Partial<Usuario>) => {

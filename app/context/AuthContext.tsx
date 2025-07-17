@@ -1,4 +1,5 @@
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import Toast from 'react-native-toast-message';
 import api from '~/api';
@@ -6,6 +7,7 @@ import { Usuario } from '~/types';
 
 interface AuthContextType {
     data: Usuario | null
+    token: string | null
     isAuthenticated: boolean;
     isLoading: boolean
     login: (username: string, password: string) => void
@@ -17,15 +19,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isAuthenticated, setAuthenticated] = useState(false);
     const [data, setData] = useState<Usuario | null>(null);
+    const [token, setToken] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false)
     const login = async (usuario: string, senha: string) =>{
         setIsLoading(true)
         await api.post('/usuarios/login', {usuario, senha})
-        .then((response)=>{
+        .then(async (response)=>{
+
             const data = response.data
             if(data){
                 setAuthenticated(true);
-                setData(data);
+                setData(data.data);
+                setToken(data.token);
+                await AsyncStorage.setItem('token', data.token);
             }else{
                 Toast.show({
                     text1: 'Aviso',
@@ -42,10 +48,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const logout = () =>{
          setAuthenticated(false);
          setData(null);
+         setToken(null);
     }
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout, data }}>
+        <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout, data, token }}>   
             {children}
         </AuthContext.Provider>
     );

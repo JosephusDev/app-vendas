@@ -6,6 +6,7 @@ import produtoRoutes from './routes/Produto'
 import vendaRoutes from './routes/Venda'
 import itensVendaRoutes from './routes/ItensVenda'
 import cors from 'cors'
+import { authenticateToken } from './middleware/authentication'
 
 // criando um servidor http
 const app = express()
@@ -16,10 +17,10 @@ app.use(express.json())
 // com Cors podemos definir quais origens podem requisitar a API
 app.use(cors())
 app.use('/usuarios', usuariosRoutes)
-app.use('/categoria', categoriaRoutes)
-app.use('/cliente', clienteRoutes)
-app.use('/produto', produtoRoutes)
-app.use('/venda', vendaRoutes)
-app.use('/item-venda', itensVendaRoutes)
+app.use('/categoria', authenticateToken, categoriaRoutes)
+app.use('/cliente', authenticateToken, clienteRoutes)
+app.use('/produto', authenticateToken, produtoRoutes)
+app.use('/venda', authenticateToken, vendaRoutes)
+app.use('/item-venda',authenticateToken, itensVendaRoutes)
 
 export default app
